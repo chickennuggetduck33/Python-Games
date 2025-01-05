@@ -47,6 +47,7 @@ player = pygame.Rect(settings.player_x,
 
 player_y_velocity = 0
 is_jumping = False
+player_x_velocity = 0
 
 # Main game loop
 running = True
@@ -58,21 +59,32 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
+    keys = pygame.key.get_pressed()
     # Continuously jump. If the player is not jumping, initialize a new jump
-    if is_jumping is False:
-        # Jumping means that the player is going up. The top of the 
-        # screen is y=0, and the bottom is y=SCREEN_HEIGHT. So, to go up,
-        # we need to have a negative y velocity
-        player_y_velocity = -settings.jump_velocity
-        is_jumping = True
-
+    if keys [pygame.K_LEFT]:
+        player_x_velocity = -15
+    if keys [pygame.K_RIGHT]:
+        player_x_velocity = 15
+    if keys[pygame.K_SPACE]:
+        if is_jumping is False:
+            # Jumping means that the player is going up. The top of the 
+            # screen is y=0, and the bottom is y=SCREEN_HEIGHT. So, to go up,
+            # we need to have a negative y velocity
+            player_y_velocity = -settings.jump_velocity
+            is_jumping = True
+    if player.left <= 0:
+        player_x_velocity = 0
+        player.left = 1
+    if player.right>= 500:
+        player_x_velocity = 0
+        player.right = 499
     # Update player position. Gravity is always pulling the player down,
     # which is the positive y direction, so we add GRAVITY to the y velocity
     # to make the player go up more slowly. Eventually, the player will have
     # a positive y velocity, and gravity will pull the player down.
     player_y_velocity += settings.gravity
     player.y += player_y_velocity
+    player.x += player_x_velocity
 
     # If the player hits the ground, stop the player from falling.
     # The player's position is measured from the top left corner, so the
@@ -84,6 +96,10 @@ while running:
         player.bottom = settings.screen_height 
         player_y_velocity = 0
         is_jumping = False
+
+
+    if player.right >= 0:
+        player_x_velocity = 0
 
     # Draw everything
     screen.fill(settings.white)

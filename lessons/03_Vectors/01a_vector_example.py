@@ -18,7 +18,7 @@ Vector20, draw_v20, draw_grid = Vector20Factory(screen_width, screen_height, 20)
 draw_grid(screen)
 
 # Create some vectors
-v0 = Vector20(0,0)
+v0 = Vector20(0, 0)
 v1 = Vector20(8, 8)  
 v2 = Vector20(3, -12)  
 v3 = Vector20(-4, -2)  
