@@ -40,11 +40,15 @@ class Turtle:
         self.y -= dy
 
         # Draw line to the new position
-        pygame.draw.line(self.screen, black, (start_x, start_y), (self.x, self.y), 2)
+        pygame.draw.line(self.screen, gold, (start_x, start_y), (self.x, self.y), 2)
 
     def left(self, angle):
         # Turn left by adjusting the angle counterclockwise
         self.angle = (self.angle + angle) % 360
+    def right(self, angle):
+        self.angle = (self.angle - angle) % 360
+
+
 
 
 # Main loop
@@ -60,6 +64,9 @@ pygame.display.set_caption("Turtle Style Drawing")
 # Colors
 white = (255, 255, 255)
 black = (0, 0, 0)
+blue = (0, 0, 255)
+red = (255, 0, 0)
+gold = (255, 204, 51)
 
 screen.fill(white)
 turtle = Turtle(screen, screen.get_width() // 2, screen.get_height() // 2)  # Start at the center of the screen
