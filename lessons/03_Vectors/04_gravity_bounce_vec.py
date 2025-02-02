@@ -160,6 +160,7 @@ class Player:
         
         if (self.at_left() and self.going_left() ) or ( self.at_right() and self.going_right()):
             self.vel.x = -self.vel.x
+        
             
     def update_pos(self):
         """Update the player's position based on velocity"""
