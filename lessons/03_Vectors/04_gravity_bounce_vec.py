@@ -91,7 +91,8 @@ class Player:
         
         # Player's velocity
         self.vel = pygame.Vector2(settings.player_v_x, settings.player_v_y)  # Velocity vector
-
+        
+        
 
 
     # Direction functions. IMPORTANT! Using these functions isn't really
