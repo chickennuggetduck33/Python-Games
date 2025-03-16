@@ -20,6 +20,7 @@ class Settings:
 # inherits from the Sprite class. The main additional function of a Sprite is
 # that it can be added and removed from groups. This is useful for handling
 # multiple objects of the same type, like projectiles.
+
 class Spaceship(pygame.sprite.Sprite):
     """Class representing the spaceship."""
 
@@ -86,6 +87,11 @@ class Spaceship(pygame.sprite.Sprite):
     def update(self):
         
         keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_UP]:
+            vectorchange = pygame.Vector2(0, 0)
+            vectorchange.from_polar((0.05, self.angle+270))
+            self.velocity += vectorchange
 
         if keys[pygame.K_LEFT]:
             self.angle -= 5
