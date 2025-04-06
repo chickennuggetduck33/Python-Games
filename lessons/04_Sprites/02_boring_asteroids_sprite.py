@@ -1,5 +1,11 @@
 import pygame
 import math
+from pathlib import Path
+
+
+assets = Path(__file__).parent / "images"
+
+
 
 
 class Settings:
@@ -40,6 +46,7 @@ class Spaceship(pygame.sprite.Sprite):
 
         self.image = self.original_image.copy() 
         self.rect = self.image.get_rect(center=position)
+        
 
         # These values help us limit the rate of fire
         self.last_shot = pygame.time.get_ticks()
@@ -117,7 +124,15 @@ class Spaceship(pygame.sprite.Sprite):
     # Sprite class already has a draw method that will draw the image on the
     # screen. We only need to add the sprite to a group and the group will take
     # care of drawing the sprite.
-
+class AlienSpaceship(Spaceship):
+            
+    def create_spaceship_image(self):
+        """Creates the spaceship shape as a surface."""
+                
+        image = pygame.image.load(assets/'skibidi.jpeg')
+        print(image.get_rect())
+        image = pygame.transform.scale(image,(100, 150))
+        return image
         
 
 class Projectile(pygame.sprite.Sprite):
@@ -223,10 +238,10 @@ if __name__ == "__main__":
 
     game = Game(settings)
 
-    spaceship = Spaceship(
+    alienspaceship = AlienSpaceship(
         settings, position=(settings.width // 2, settings.height // 2)
     )
 
-    game.add(spaceship)
+    game.add(alienspaceship)
 
     game.run()
