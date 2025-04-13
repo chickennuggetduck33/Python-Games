@@ -116,6 +116,16 @@ class Spaceship(pygame.sprite.Sprite):
         
         self.rect.center += self.velocity
 
+        if self.rect.x <= -100:
+            self.rect.x = 900
+        if self.rect.x >= 901:
+            self.rect.x = -100
+        if self.rect.y >= 700:
+            self.rect.y = -100
+        if self.rect.y <= -100:
+            self.rect.y = 700
+
+
         # Dont forget this part! If you don't call the Sprite update method, the
         # sprite will not be drawn
         super().update()
@@ -129,9 +139,9 @@ class AlienSpaceship(Spaceship):
     def create_spaceship_image(self):
         """Creates the spaceship shape as a surface."""
                 
-        image = pygame.image.load(assets/'skibidi.jpeg')
+        image = pygame.image.load(assets/'chickenjockey.webp')
         print(image.get_rect())
-        image = pygame.transform.scale(image,(100, 150))
+        image = pygame.transform.scale(image,(100, 450))
         return image
         
 
@@ -150,10 +160,14 @@ class Projectile(pygame.sprite.Sprite):
         self.velocity = pygame.Vector2(0, -1).rotate(angle) * velocity
 
         # Dont forget to create the image and rect attributes for the sprite
-        self.image = pygame.Surface(
-            (self.settings.projectile_size, self.settings.projectile_size),
-            pygame.SRCALPHA,
-        )
+        #self.image = pygame.Surface(
+            #(self.settings.projectile_size, self.settings.projectile_size),
+            #pygame.SRCALPHA,
+        #)
+        self.image = pygame.image.load(assets/'Baby_Zombie_JE2_BE2.webp')
+        print(self.image.get_rect())
+        self.image = pygame.transform.scale(self.image,(100, 450))
+        
 
         half_size = self.settings.projectile_size // 2
 
