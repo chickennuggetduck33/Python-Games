@@ -16,46 +16,47 @@ pygame.init()
 images_dir = Path(__file__).parent / "images" if (Path(__file__).parent / "images").exists() else Path(__file__).parent / "assets"
 
 # Screen dimensions
-WIDTH, HEIGHT = 600, 300
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Dino Jump")
-
-# Colors
-BLUE = (0, 0, 255)
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-
-# FPS
-FPS = 60
+class settings:
+    WIDTH, HEIGHT = 600, 300
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("Dino Jump")
+    BLUE = (0, 0, 255)
+    BLACK = (0, 0, 0)
+    WHITE = (255, 255, 255)
+    FPS = 60
+    OBSTACLE_WIDTH = 20
+    OBSTACLE_HEIGHT = 20
+    obstacle_speed = 5
+    PLAYER_SIZE = 25
+    player_speed = 5
+    font = pygame.font.SysFont(None, 36)
 
 # Player attributes
-PLAYER_SIZE = 25
 
-player_speed = 5
+
+
 
 # Obstacle attributes
-OBSTACLE_WIDTH = 20
-OBSTACLE_HEIGHT = 20
-obstacle_speed = 5
+
 
 # Font
-font = pygame.font.SysFont(None, 36)
+
 
 
 # Define an obstacle class
 class Obstacle(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((OBSTACLE_WIDTH, OBSTACLE_HEIGHT))
-        self.image.fill(BLACK)
+        self.image = pygame.Surface((settings.OBSTACLE_WIDTH, settings.OBSTACLE_HEIGHT))
+        self.image.fill(settings.BLACK)
         self.rect = self.image.get_rect()
-        self.rect.x = WIDTH
-        self.rect.y = HEIGHT - OBSTACLE_HEIGHT - 10
+        self.rect.x = settings.WIDTH
+        self.rect.y = settings.HEIGHT - settings.OBSTACLE_HEIGHT - 10
 
         self.explosion = pygame.image.load(images_dir / "explosion1.gif")
 
     def update(self):
-        self.rect.x -= obstacle_speed
+        self.rect.x -= settings.obstacle_speed
         # Remove the obstacle if it goes off screen
         if self.rect.right < 0:
             self.kill()
@@ -65,7 +66,7 @@ class Obstacle(pygame.sprite.Sprite):
         
         # Load the explosion image
         self.image = self.explosion
-        self.image = pygame.transform.scale(self.image, (OBSTACLE_WIDTH, OBSTACLE_HEIGHT))
+        self.image = pygame.transform.scale(self.image, (settings.OBSTACLE_WIDTH, settings.OBSTACLE_HEIGHT))
         self.rect = self.image.get_rect(center=self.rect.center)
 
 
@@ -73,12 +74,12 @@ class Obstacle(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((PLAYER_SIZE, PLAYER_SIZE))
-        self.image.fill(BLUE)
+        self.image = pygame.Surface((settings.PLAYER_SIZE, settings.PLAYER_SIZE))
+        self.image.fill(settings.BLUE)
         self.rect = self.image.get_rect()
         self.rect.x = 50
-        self.rect.y = HEIGHT - PLAYER_SIZE - 10
-        self.speed = player_speed
+        self.rect.y = settings.HEIGHT - settings.PLAYER_SIZE - 10
+        self.speed = settings.player_speed
 
     def update(self):
         keys = pygame.key.get_pressed()
@@ -86,12 +87,14 @@ class Player(pygame.sprite.Sprite):
             self.rect.y -= self.speed
         if keys[pygame.K_DOWN]:
             self.rect.y += self.speed
+        if keys[pygame.K_SPACE]:
+            self.rect.y += self.speed
 
         # Keep the player on screen
         if self.rect.top < 0:
             self.rect.top = 0
-        if self.rect.bottom > HEIGHT:
-            self.rect.bottom = HEIGHT
+        if self.rect.bottom > settings.HEIGHT:
+            self.rect.bottom = settings.HEIGHT
 
 # Create a player object
 player = Player()
@@ -148,19 +151,19 @@ def game_loop():
             collider[0].explode()
        
         # Draw everything
-        screen.fill(WHITE)
-        pygame.draw.rect(screen, BLUE, player)
-        obstacles.draw(screen)
+        settings.screen.fill(settings.WHITE)
+        pygame.draw.rect(settings.screen, settings.BLUE, player)
+        obstacles.draw(settings.screen)
 
         # Display obstacle count
-        obstacle_text = font.render(f"Obstacles: {obstacle_count}", True, BLACK)
-        screen.blit(obstacle_text, (10, 10))
+        obstacle_text = settings.font.render(f"Obstacles: {obstacle_count}", True, settings.BLACK)
+        settings.screen.blit(obstacle_text, (10, 10))
 
         pygame.display.update()
-        clock.tick(FPS)
+        clock.tick(settings.FPS)
 
     # Game over screen
-    screen.fill(WHITE)
+    settings.screen.fill(settings.WHITE)
 
 if __name__ == "__main__":
     game_loop()

@@ -166,7 +166,7 @@ class Projectile(pygame.sprite.Sprite):
         #)
         self.image = pygame.image.load(assets/'Baby_Zombie_JE2_BE2.webp')
         print(self.image.get_rect())
-        self.image = pygame.transform.scale(self.image,(100, 450))
+        self.image = pygame.transform.scale(self.image,(50, 100))
         
 
         half_size = self.settings.projectile_size // 2
