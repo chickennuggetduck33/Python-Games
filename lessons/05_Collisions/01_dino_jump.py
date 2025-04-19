@@ -80,6 +80,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = 50
         self.rect.y = settings.HEIGHT - settings.PLAYER_SIZE - 10
         self.speed = settings.player_speed
+      
 
     def update(self):
         keys = pygame.key.get_pressed()
@@ -87,8 +88,12 @@ class Player(pygame.sprite.Sprite):
             self.rect.y -= self.speed
         if keys[pygame.K_DOWN]:
             self.rect.y += self.speed
-        if keys[pygame.K_SPACE]:
+        if keys[pygame.K_SPACE] and self.rect.y >= 275:
+            if self.rect.y > 200:
+                self.rect.y -= 100
+        else:
             self.rect.y += self.speed
+            
 
         # Keep the player on screen
         if self.rect.top < 0:
