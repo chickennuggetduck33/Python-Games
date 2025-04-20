@@ -6,9 +6,12 @@ obstacles. The game should end when the player collides with an obstacle ...
 but it does not. It's a work in progress, and you'll have to finish it. 
 
 """
+
 import pygame
 import random
 from pathlib import Path
+
+assets = Path(__file__).parent / "images"
 
 # Initialize Pygame
 pygame.init()
@@ -60,6 +63,8 @@ class Obstacle(pygame.sprite.Sprite):
         # Remove the obstacle if it goes off screen
         if self.rect.right < 0:
             self.kill()
+            player.score +=1
+            print(player.score)
 
     def explode(self):
         """Replace the image with an explosition image."""
@@ -68,18 +73,24 @@ class Obstacle(pygame.sprite.Sprite):
         self.image = self.explosion
         self.image = pygame.transform.scale(self.image, (settings.OBSTACLE_WIDTH, settings.OBSTACLE_HEIGHT))
         self.rect = self.image.get_rect(center=self.rect.center)
+        self.kill()
 
 
 # Define a player class
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((settings.PLAYER_SIZE, settings.PLAYER_SIZE))
-        self.image.fill(settings.BLUE)
+        self.image = pygame.image.load(assets/'dino_0.png')
+        print(self.image.get_rect())
+        self.image = pygame.transform.scale(self.image,(25, 25))
+        #self.image.fill(settings.BLUE)
         self.rect = self.image.get_rect()
         self.rect.x = 50
         self.rect.y = settings.HEIGHT - settings.PLAYER_SIZE - 10
         self.speed = settings.player_speed
+        
+        self.score = 0
+        
       
 
     def update(self):
@@ -88,12 +99,12 @@ class Player(pygame.sprite.Sprite):
             self.rect.y -= self.speed
         if keys[pygame.K_DOWN]:
             self.rect.y += self.speed
-        if keys[pygame.K_SPACE] and self.rect.y >= 275:
-            if self.rect.y > 200:
-                self.rect.y -= 100
-        else:
-            self.rect.y += self.speed
-            
+        if keys[pygame.K_SPACE] and self.rect.bottom == settings.HEIGHT:
+            self.speed = -5.8
+        
+        
+        self.rect.y += self.speed
+        self.speed += .37
 
         # Keep the player on screen
         if self.rect.top < 0:
@@ -127,11 +138,13 @@ def game_loop():
     game_over = False
     last_obstacle_time = pygame.time.get_ticks()
 
+    
     # Group for obstacles
     obstacles = pygame.sprite.Group()
 
     player = Player()
-
+    playergroup = pygame.sprite.Group()
+    playergroup.add(player)
     obstacle_count = 0
 
     while not game_over:
@@ -157,12 +170,16 @@ def game_loop():
        
         # Draw everything
         settings.screen.fill(settings.WHITE)
-        pygame.draw.rect(settings.screen, settings.BLUE, player)
+        #pygame.draw.rect(settings.screen, settings.BLUE, player)
         obstacles.draw(settings.screen)
+        playergroup.draw(settings.screen)
 
         # Display obstacle count
+        score = player.score
         obstacle_text = settings.font.render(f"Obstacles: {obstacle_count}", True, settings.BLACK)
         settings.screen.blit(obstacle_text, (10, 10))
+        score_text = settings.font.render(f"score: {int(score)}", True, settings.BLACK)
+        settings.screen.blit(score_text, (400, 10))
 
         pygame.display.update()
         clock.tick(settings.FPS)
