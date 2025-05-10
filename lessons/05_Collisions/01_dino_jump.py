@@ -12,6 +12,7 @@ import random
 from pathlib import Path
 
 assets = Path(__file__).parent / "images"
+score = 0
 
 # Initialize Pygame
 pygame.init()
@@ -59,12 +60,13 @@ class Obstacle(pygame.sprite.Sprite):
         self.explosion = pygame.image.load(images_dir / "explosion1.gif")
 
     def update(self):
+        global score
         self.rect.x -= settings.obstacle_speed
         # Remove the obstacle if it goes off screen
         if self.rect.right < 0:
             self.kill()
-            player.score +=1
-            print(player.score)
+            score +=1
+            print(score)
 
     def explode(self):
         """Replace the image with an explosition image."""
@@ -89,7 +91,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = settings.HEIGHT - settings.PLAYER_SIZE - 10
         self.speed = settings.player_speed
         
-        self.score = 0
+        
         
       
 
@@ -175,7 +177,7 @@ def game_loop():
         playergroup.draw(settings.screen)
 
         # Display obstacle count
-        score = player.score
+        
         obstacle_text = settings.font.render(f"Obstacles: {obstacle_count}", True, settings.BLACK)
         settings.screen.blit(obstacle_text, (10, 10))
         score_text = settings.font.render(f"score: {int(score)}", True, settings.BLACK)
