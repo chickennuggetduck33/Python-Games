@@ -13,6 +13,7 @@ from pathlib import Path
 
 assets = Path(__file__).parent / "images"
 score = 0
+highscore = 0
 
 # Initialize Pygame
 pygame.init()
@@ -45,7 +46,14 @@ class settings:
 
 # Font
 
-
+def gethighscore():
+    with open("/workspaces/Python-Games/lessons/05_Collisions/highscore.txt", "r") as file:
+        content = file.read()
+    return int(content)
+def savehighscore(highscore):
+    with open("/workspaces/Python-Games/lessons/05_Collisions/highscore.txt", "w") as file:
+        file.write(str(highscore))
+    
 
 # Define an obstacle class
 class Obstacle(pygame.sprite.Sprite):
@@ -66,16 +74,27 @@ class Obstacle(pygame.sprite.Sprite):
         if self.rect.right < 0:
             self.kill()
             score +=1
-            print(score)
+            #print(score)
 
     def explode(self):
         """Replace the image with an explosition image."""
+        global score
+        global highscore
+        global game_over
         
         # Load the explosion image
         self.image = self.explosion
         self.image = pygame.transform.scale(self.image, (settings.OBSTACLE_WIDTH, settings.OBSTACLE_HEIGHT))
         self.rect = self.image.get_rect(center=self.rect.center)
+        if highscore < score:
+            highscore = score
+            savehighscore(highscore)
+        #print(highscore)
+        score = 0
         self.kill()
+        game_over = True
+        return True
+        
 
 
 # Define a player class
@@ -136,6 +155,7 @@ def add_obstacle(obstacles):
 
 # Main game loop
 def game_loop():
+    highscore = gethighscore()
     clock = pygame.time.Clock()
     game_over = False
     last_obstacle_time = pygame.time.get_ticks()
@@ -149,45 +169,72 @@ def game_loop():
     playergroup.add(player)
     obstacle_count = 0
 
-    while not game_over:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
+    gameoverbutton = pygame.Rect(100, 100, 150, 150)
+    restarttext = settings.font.render(f"restart", True, settings.BLACK)
 
-        # Update player
-        player.update()
+    while True:
+        if not game_over:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
 
-        # Add obstacles and update
-        if pygame.time.get_ticks() - last_obstacle_time > 500:
-            last_obstacle_time = pygame.time.get_ticks()
-            obstacle_count += add_obstacle(obstacles)
+            # Update player
+            player.update()
+
+            # Add obstacles and update
+            if pygame.time.get_ticks() - last_obstacle_time > 500:
+                last_obstacle_time = pygame.time.get_ticks()
+                obstacle_count += add_obstacle(obstacles)
+            
+            obstacles.update()
+
+            # Check for collisions
+            collider = pygame.sprite.spritecollide(player, obstacles, dokill=False)
+            if collider:
+                collider[0].explode()
+                game_over = True
+                
         
-        obstacles.update()
+            # Draw everything
+            settings.screen.fill(settings.WHITE)
+            #pygame.draw.rect(settings.screen, settings.BLUE, player)
+            obstacles.draw(settings.screen)
+            playergroup.draw(settings.screen)
 
-        # Check for collisions
-        collider = pygame.sprite.spritecollide(player, obstacles, dokill=False)
-        if collider:
-            collider[0].explode()
-       
-        # Draw everything
-        settings.screen.fill(settings.WHITE)
-        #pygame.draw.rect(settings.screen, settings.BLUE, player)
-        obstacles.draw(settings.screen)
-        playergroup.draw(settings.screen)
+            # Display obstacle count
+            
+            obstacle_text = settings.font.render(f"Obstacles: {obstacle_count}", True, settings.BLACK)
+            settings.screen.blit(obstacle_text, (10, 10))
+            score_text = settings.font.render(f"score: {int(score)}", True, settings.BLACK)
+            settings.screen.blit(score_text, (400, 10))
+            highscore_text = settings.font.render(f"high score: {int(highscore)}", True, settings.BLACK)
+            settings.screen.blit(highscore_text, (400, 30))
 
-        # Display obstacle count
         
-        obstacle_text = settings.font.render(f"Obstacles: {obstacle_count}", True, settings.BLACK)
-        settings.screen.blit(obstacle_text, (10, 10))
-        score_text = settings.font.render(f"score: {int(score)}", True, settings.BLACK)
-        settings.screen.blit(score_text, (400, 10))
+        else:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse = pygame.mouse.get_pos()
+                if mouse[0]> gameoverbutton.x and mouse[0] < gameoverbutton.x + gameoverbutton.width:
+                    if mouse[1]> gameoverbutton.y and mouse[1] < gameoverbutton.y + gameoverbutton.height:
+                        game_over = False
+                        obstacle_count = 0
+                        obstacles.empty()
+
+            settings.screen.fill(settings.BLACK)
+            pygame.draw.rect(settings.screen, settings.WHITE, gameoverbutton)
+            settings.screen.blit(restarttext, (100, 100))
+        highscore = gethighscore()
 
         pygame.display.update()
         clock.tick(settings.FPS)
-
     # Game over screen
-    settings.screen.fill(settings.WHITE)
+    
+    
 
 if __name__ == "__main__":
     game_loop()
