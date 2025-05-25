@@ -28,14 +28,14 @@ class settings:
     BLUE = (0, 0, 255)
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
+    RED = (255, 0, 0)
     FPS = 60
-    OBSTACLE_WIDTH = 20
-    OBSTACLE_HEIGHT = 20
     obstacle_speed = 5
     PLAYER_SIZE = 25
     player_speed = 5
     font = pygame.font.SysFont(None, 36)
-
+OBSTACLE_WIDTH = 20
+OBSTACLE_HEIGHT = 20
 # Player attributes
 
 
@@ -59,13 +59,18 @@ def savehighscore(highscore):
 class Obstacle(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((settings.OBSTACLE_WIDTH, settings.OBSTACLE_HEIGHT))
+        self.image = pygame.Surface((OBSTACLE_WIDTH, OBSTACLE_HEIGHT))
         self.image.fill(settings.BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = settings.WIDTH
-        self.rect.y = settings.HEIGHT - settings.OBSTACLE_HEIGHT - 10
+        self.rect.y = settings.HEIGHT - OBSTACLE_HEIGHT - 10
 
         self.explosion = pygame.image.load(images_dir / "explosion1.gif")
+        self.cactus = pygame.image.load(images_dir / "job.webp")
+
+        self.image = self.cactus
+        self.image = pygame.transform.scale(self.image, (OBSTACLE_WIDTH, OBSTACLE_HEIGHT))
+        self.rect = self.image.get_rect(center=self.rect.center)
 
     def update(self):
         global score
@@ -84,7 +89,7 @@ class Obstacle(pygame.sprite.Sprite):
         
         # Load the explosion image
         self.image = self.explosion
-        self.image = pygame.transform.scale(self.image, (settings.OBSTACLE_WIDTH, settings.OBSTACLE_HEIGHT))
+        self.image = pygame.transform.scale(self.image, (OBSTACLE_WIDTH, OBSTACLE_HEIGHT))
         self.rect = self.image.get_rect(center=self.rect.center)
         if highscore < score:
             highscore = score
@@ -197,7 +202,7 @@ def game_loop():
                 
         
             # Draw everything
-            settings.screen.fill(settings.WHITE)
+            settings.screen.fill(settings.RED)
             #pygame.draw.rect(settings.screen, settings.BLUE, player)
             obstacles.draw(settings.screen)
             playergroup.draw(settings.screen)
