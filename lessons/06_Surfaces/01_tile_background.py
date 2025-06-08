@@ -5,6 +5,7 @@ tiling it to fill the screen.
 """
 import pygame
 
+
 # Initialize Pygame
 pygame.init()
 
@@ -19,6 +20,10 @@ pygame.display.set_caption('Tiled Background')
 def make_rectangle():
     pygame.Rect(1, 1, 100, 100)
     
+    
+def maketiledcolors(screen):
+    pygame.Surface.fill((255, 0, 0), rect=None, special_flags=0)
+
 def make_tiled_bg(screen, bg_file):
     # Scale background to match the screen height
     
