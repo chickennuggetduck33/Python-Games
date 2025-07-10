@@ -36,7 +36,7 @@ class Background(pygame.sprite.Sprite):
         
         # Load the background image and scale it to the screen size. Note the convert() call. 
         # This converts the form of the image to be more efficient. 
-        orig_image= pygame.image.load(d/'images/background_scroll.png').convert()
+        orig_image= pygame.image.load(d/'images/colors.png').convert()
         orig_image = pygame.transform.scale(orig_image, (Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT))
         
         # Then, copy it into the self.image surface twice

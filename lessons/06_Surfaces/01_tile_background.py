@@ -11,6 +11,13 @@ pygame.init()
 
 from pathlib import Path
 assets = Path(__file__).parent / 'images'
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+BLUE = (0, 0, 255)
+GREEN = (0, 255, 0)
+BLACK = (0, 0, 0)
+PURPLE = (255, 0, 255)
+
 
 # Set up display
 screen_width = 600
@@ -19,6 +26,13 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Tiled Background')
 def make_rectangle():
     pygame.Rect(1, 1, 100, 100)
+test = pygame.Rect(1, 1, 100, 600)
+test2 = pygame.Rect(100, 1, 100, 600)
+test3 = pygame.Rect(200, 1, 100, 600)
+test4 = pygame.Rect(300, 1, 100, 600)
+test5 = pygame.Rect(400, 1, 100, 600)
+test6 = pygame.Rect(500, 1, 100, 600)
+
     
     
 def maketiledcolors(screen):
@@ -54,6 +68,14 @@ while running:
             running = False
 
     screen.blit(background,(0,0))
+    pygame.draw.rect(screen, WHITE, test)
+    pygame.draw.rect(screen, RED, test2)
+    pygame.draw.rect(screen, BLUE, test3)
+    pygame.draw.rect(screen, PURPLE, test4)
+    pygame.draw.rect(screen, BLACK, test5)
+    pygame.draw.rect(screen, GREEN, test6)
+    
+    
 
     # Update the display
     pygame.display.flip()
