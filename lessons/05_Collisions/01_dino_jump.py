@@ -91,6 +91,8 @@ class Obstacle(pygame.sprite.Sprite):
         self.image = self.explosion
         self.image = pygame.transform.scale(self.image, (OBSTACLE_WIDTH, OBSTACLE_HEIGHT))
         self.rect = self.image.get_rect(center=self.rect.center)
+        print(highscore)
+        print(score)
         if highscore < score:
             highscore = score
             savehighscore(highscore)
@@ -156,11 +158,11 @@ def add_obstacle(obstacles):
         obstacles.add(obstacle)
         return 1
     return 0
-
+highscore = gethighscore()
 
 # Main game loop
 def game_loop():
-    highscore = gethighscore()
+    
     clock = pygame.time.Clock()
     game_over = False
     last_obstacle_time = pygame.time.get_ticks()
@@ -233,7 +235,7 @@ def game_loop():
             settings.screen.fill(settings.BLACK)
             pygame.draw.rect(settings.screen, settings.WHITE, gameoverbutton)
             settings.screen.blit(restarttext, (100, 100))
-        highscore = gethighscore()
+        
 
         pygame.display.update()
         clock.tick(settings.FPS)
