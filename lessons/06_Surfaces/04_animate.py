@@ -1,6 +1,7 @@
 import pygame
 from jtlgames.spritesheet import SpriteSheet
 from pathlib import Path
+import math
 
 images = Path(__file__).parent / 'images'
 
@@ -83,6 +84,10 @@ def main():
         if frame_count % frames_per_image == 0: 
             frog_index = (frog_index + 1) % len(frog_sprites)
             allig_index = (allig_index + 1) % len(allig_sprites)
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_UP]:
+            
+
         
         # Get the current sprite and display it in the middle of the screen
 
