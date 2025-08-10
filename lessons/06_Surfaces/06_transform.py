@@ -43,10 +43,15 @@ screen.blit(alig, grid[14])
 # Scale in X and Y, bigger or smaller. 
 alig3x = pygame.transform.scale(alig, (alig.get_width() * 3, alig.get_height() * 3))
 screen.blit(alig3x, grid[15])
-
+fly3 = pygame.transform.scale(fly, (fly.get_width() * 3, fly.get_height() * 4))
+screen.blit(fly3, grid[14])
 # Flip top to bottom
 alig3x_hflip = pygame.transform.flip(alig3x, True, False)
 screen.blit(alig3x_hflip, grid[19])
+flyflip = pygame.transform.flip(fly3, True, False)
+screen.blit(flyflip, grid[50])
+
+
 
 # Flip left to right. 
 alig3x_vflip = pygame.transform.flip(alig3x, False, True)
@@ -80,7 +85,10 @@ for  i in range(5):
     screen.blit(frog_rot, grid[112+(i*2)])
 
 
-
+    flyrot = pygame.transform.rotate(fly3, 30)
+    screen.blit(flyrot, grid[100])
+    flyflip2 = pygame.transform.flip(flyrot, True, True)
+    screen.blit(flyflip2, grid[19])
 pygame.display.flip()
 
 

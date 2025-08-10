@@ -86,7 +86,7 @@ def main():
             allig_index = (allig_index + 1) % len(allig_sprites)
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
-            
+            pass
 
         
         # Get the current sprite and display it in the middle of the screen
