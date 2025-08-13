@@ -38,6 +38,8 @@ OBSTACLE_WIDTH = 20
 OBSTACLE_HEIGHT = 20
 # Player attributes
 
+ 
+
 
 
 
@@ -178,6 +180,8 @@ def game_loop():
 
     gameoverbutton = pygame.Rect(100, 100, 150, 150)
     restarttext = settings.font.render(f"restart", True, settings.BLACK)
+
+    
 
     while True:
         if not game_over:
