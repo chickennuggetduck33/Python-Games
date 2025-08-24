@@ -66,7 +66,7 @@ def savehighscore(highscore):
 class Obstacle(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((OBSTACLE_WIDTH, random.randint(20, 100)))
+        self.image = pygame.Surface((OBSTACLE_WIDTH, random.randint(20, 300)))
         self.image.fill(settings.BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = settings.WIDTH
