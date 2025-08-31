@@ -40,7 +40,7 @@ class settings:
     font = pygame.font.SysFont(None, 36)
 OBSTACLE_WIDTH = 20
 OBSTACLE_HEIGHT = 500
-OBSTACLE_HEIGHT2 = 50
+OBSTACLE_HEIGHT2 = 1000
 # Player attributes
 
  
@@ -70,7 +70,7 @@ class Obstacle(pygame.sprite.Sprite):
         self.image.fill(settings.BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = settings.WIDTH
-        self.rect.y = settings.HEIGHT - OBSTACLE_HEIGHT - 10
+        self.rect.y = settings.HEIGHT - OBSTACLE_HEIGHT - 50
 
         self.explosion = pygame.image.load(images_dir / "explosion1.gif")
         self.cactus = pygame.image.load(images_dir / "pipe-green.png")
@@ -112,14 +112,14 @@ class Obstacle(pygame.sprite.Sprite):
 
 
 
-    class Obstacle2(pygame.sprite.Sprite):
+class Obstacle2(pygame.sprite.Sprite):
         def __init__(self):
             super().__init__()
             self.image = pygame.Surface((OBSTACLE_WIDTH, random.randint(20, 100)))
             self.image.fill(settings.BLACK)
             self.rect = self.image.get_rect()
             self.rect.x = settings.WIDTH
-            self.rect.y = settings.HEIGHT - OBSTACLE_HEIGHT - 10
+            self.rect.y = settings.HEIGHT - OBSTACLE_HEIGHT + 900
 
             self.explosion = pygame.image.load(images_dir / "explosion1.gif")
             self.cactus = pygame.image.load(images_dir / "pipe-green.png")
@@ -212,8 +212,8 @@ def add_obstacle(obstacles):
     if random.random() < 0.4:
         obstacle = Obstacle()
         obstacles.add(obstacle)
-        obstacle2 = Obstacle()
-        obstacles.add(obstacle)
+        obstacle2 = Obstacle2()
+        obstacles.add(obstacle2)
         return 1
     return 0
 highscore = gethighscore()
