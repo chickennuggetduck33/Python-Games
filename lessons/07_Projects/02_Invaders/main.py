@@ -26,6 +26,18 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = 262.5
         self.rect.y = HEIGHT - PLAYER_SIZE + 400
         self.speed = player_speed
+
+class Projectile:
+    def __init__(self, position, angle, settings):
+        self.position = position.copy()
+        self.direction = pygame.Vector2(0, -1).rotate(angle)
+        self.settings = settings
+
+    def move(self):
+        self.position += self.direction * self.settings.projectile_speed
+
+    def draw(self, surface):
+        pygame.draw.circle(surface, self.settings.colors['red'], (int(self.position.x), int(self.position.y)), 5)
 player = Player()
 group = pygame.sprite.Group()
 group.add(player)
@@ -39,11 +51,11 @@ class Enemy(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load(assets/'alien.png')
         print(self.image.get_rect())
-        self.image = pygame.transform.scale(self.image,(75, 75))
+        self.image = pygame.transform.scale(self.image,(40, 40))
         #self.image.fill(settings.BLUE)
         self.rect = self.image.get_rect()
         self.rect.x = EX
-        self.rect.y = 200
+        self.rect.y = 0
         self.speed = ENEMY_SPEED
 enemy = Enemy()
 Egroup = pygame.sprite.Group()
@@ -71,7 +83,7 @@ while running:
     if keys[pygame.K_RIGHT]:
         player.rect.x += player_speed
     pygame.display.flip()
-    
+
     
         
         # Get the keys pressed. Gtes an array of all the keys
